@@ -4,7 +4,7 @@ using namespace std;
 vector<long long> find_res(vector<long long> a, vector<long long> b)
 {
     vector<long long> res;
-    
+
     res.clear();
 
     for (auto i = b.begin(); i != b.end(); i++)
