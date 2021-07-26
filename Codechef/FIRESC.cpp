@@ -11,10 +11,16 @@ long long BFS(bool visited[], long long i, unordered_map<long long, vector<long 
         return 1;
     }
 
-    long long q_max = 1; // store the maximum size of the queue thus the number of employees using this exit
     queue<long long> que;
+    unordered_set<long long> s1;
+    s1.clear();
+
+    while (!que.empty())
+        que.pop();
+
     que.push(i);
     visited[i - 1] = true;
+    s1.insert(i);
 
     // BFS
     while (!que.empty())
@@ -22,20 +28,15 @@ long long BFS(bool visited[], long long i, unordered_map<long long, vector<long 
         for (auto x = graph[que.front()].begin(); x != graph[que.front()].end(); x++)
             if (!visited[(*x) - 1])
             {
+                s1.insert((*x));
                 que.push(*x);
                 visited[(*x) - 1] = true;
             }
 
-        // cout << "qs = " << que.size();
-
-        if (que.size() > q_max)
-            q_max = que.size();
-
-        cout << "q_max = " << q_max;
         que.pop();
     }
 
-    return q_max;
+    return s1.size();
 }
 
 void find_sol(long long N, unordered_map<long long, vector<long long>> graph)
@@ -49,7 +50,7 @@ void find_sol(long long N, unordered_map<long long, vector<long long>> graph)
     set_size.clear();
 
     for (auto i = 0; i < N; i++)
-        visited[i] = 0;
+        visited[i] = false;
 
     // till the time you can find an unvisited node in the visited array, continue traversing diff graphs
     while (std::find(begin, end, false) != end)
@@ -59,7 +60,7 @@ void find_sol(long long N, unordered_map<long long, vector<long long>> graph)
 
         // get number of employees using the current gate
         auto flg = BFS(visited, i, graph);
-        cout << "max = " << flg << endl;
+        // cout << "max = " << flg << endl;
         set_size.push_back(flg);
     }
 
@@ -86,6 +87,7 @@ int main()
         {
             cin >> a >> b;
             graph[a].push_back(b);
+            graph[b].push_back(a);
         }
 
         find_sol(N, graph);
