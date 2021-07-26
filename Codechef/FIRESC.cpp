@@ -53,15 +53,17 @@ void find_sol(long long N, unordered_map<long long, vector<long long>> graph)
         visited[i] = false;
 
     // till the time you can find an unvisited node in the visited array, continue traversing diff graphs
-    while (std::find(begin, end, false) != end)
+    auto x = std::find(begin, end, false);
+    while (x != end)
     {
-        auto x = find(begin, end, false);
         auto i = x - begin + 1;
 
         // get number of employees using the current gate
         auto flg = BFS(visited, i, graph);
         // cout << "max = " << flg << endl;
         set_size.push_back(flg);
+
+        x = find(x + 1, end, false);
     }
 
     // print the answer
